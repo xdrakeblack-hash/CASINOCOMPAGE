@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1a3a1a">
+<title>Comptage Tables Casino</title>
+<style>
+:root {
+  --bg:#0a1628; --bg2:#0d1f0d; --bg3:#0a1a0a;
+  --border:#2d5a2d; --border2:#1e3a1e;
+  --accent:#7ec87e; --accent2:#e8c87a; --accent3:#7ab0e8;
+  --text:#e8dcc8; --text2:#9ab09a; --text3:#5a8a5a;
+  --neg:#e05050; --header-bg:linear-gradient(135deg,#1a3a1a,#0d2b0d);
+  --tab-bg:#111e11; --section-bg:#0a1a0a; --inp-bg:#0d1a0d;
+}
+body.theme-blue {
+  --bg:#07101f; --bg2:#0a1528; --bg3:#080e1a;
+  --border:#2d4a8a; --border2:#1e3060;
+  --accent:#7ab0e8; --accent2:#e8c87a; --accent3:#7ec87e;
+  --text:#d8e8f8; --text2:#7a9ac8; --text3:#3a5a8a;
+  --header-bg:linear-gradient(135deg,#0d2b4a,#071528);
+  --tab-bg:#0a1828; --section-bg:#080e1a; --inp-bg:#050c16;
+}
+body.theme-gold {
+  --bg:#12100a; --bg2:#1a1608; --bg3:#100e06;
+  --border:#8a7a2d; --border2:#5a5020;
+  --accent:#e8c87a; --accent2:#7ec87e; --accent3:#e8a070;
+  --text:#f0e8c8; --text2:#b0a070; --text3:#807040;
+  --header-bg:linear-gradient(135deg,#2a2010,#121008);
+  --tab-bg:#1a1808; --section-bg:#100e06; --inp-bg:#0c0a04;
+}
+body.theme-red {
+  --bg:#160808; --bg2:#1f0d0d; --bg3:#1a0808;
+  --border:#8a2d2d; --border2:#5a1e1e;
+  --accent:#e87a7a; --accent2:#e8c87a; --accent3:#7ab0e8;
+  --text:#f0d8d8; --text2:#c07070; --text3:#804040;
+  --header-bg:linear-gradient(135deg,#3a1010,#160808);
+  --tab-bg:#201010; --section-bg:#1a0808; --inp-bg:#120606;
+}
+body.theme-purple {
+  --bg:#0e0818; --bg2:#140d22; --bg3:#0c0616;
+  --border:#6a3a9a; --border2:#3a1e6a;
+  --accent:#c87ae8; --accent2:#e8c87a; --accent3:#7ab0e8;
+  --text:#eeddf8; --text2:#9a70c0; --text3:#6a3a8a;
+  --header-bg:linear-gradient(135deg,#2a1040,#0e0818);
+  --tab-bg:#180d28; --section-bg:#0c0618; --inp-bg:#090412;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body { background:var(--bg); color:var(--text); font-family:'Courier New',monospace; font-size:14px; min-height:100vh; padding-bottom:60px; transition:background 0.3s; }
+
+/* SPLASH */
+#splash { position:fixed; inset:0; z-index:9999; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; transition:opacity 0.8s; }
+#splash img { width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; opacity:0.85; }
+#splash-content { position:relative; z-index:2; text-align:center; padding:20px; }
+.s-casino { color:#e8c87a; font-size:13px; letter-spacing:4px; margin-bottom:8px; }
+.s-title  { color:#fff; font-size:26px; font-weight:bold; letter-spacing:3px; text-shadow:0 2px 20px #000; }
+.s-sub    { color:#7ec87e; font-size:11px; letter-spacing:2px; margin-top:6px; }
+.s-author { color:#e8c87a; font-size:10px; letter-spacing:1px; margin-top:20px; opacity:0.8; }
+#splash.hidden { opacity:0; pointer-events:none; }
+
+/* HEADER */
+#header { background:var(--header-bg); border-bottom:2px solid var(--border); padding:8px 12px; position:sticky; top:0; z-index:100; display:flex; flex-direction:column; gap:6px; }
+.h-casino { color:var(--accent2); font-size:10px; letter-spacing:1px; }
+.h-title  { color:var(--accent); font-weight:bold; font-size:14px; letter-spacing:2px; }
+.pill { background:var(--section-bg); border:1px solid var(--border2); border-radius:6px; padding:4px 8px; text-align:right; min-width:72px; }
+.pill-label { font-size:8px; color:#555; letter-spacing:1px; }
+.pill-value { font-size:14px; font-weight:bold; }
+#menu-btn { background:var(--tab-bg); border:1px solid var(--border2); border-radius:6px; color:var(--accent); padding:6px 10px; cursor:pointer; font-size:16px; }
+
+/* TABS */
+#tabs { display:flex; gap:5px; padding:8px 12px 0; overflow-x:auto; background:var(--bg); scrollbar-width:none; }
+#tabs::-webkit-scrollbar { display:none; }
+.tab-wrap { display:flex; align-items:center; gap:2px; }
+.tab { background:var(--tab-bg); border:1px solid var(--border2); border-radius:6px 6px 0 0; color:var(--text3); padding:5px 10px; cursor:pointer; font-size:11px; font-family:'Courier New',monospace; white-space:nowrap; }
+.tab.active { background:var(--border); border-color:var(--accent); color:var(--accent); font-weight:bold; }
+.tab-del { background:none; border:none; color:#444; cursor:pointer; font-size:13px; padding:0 2px; margin-left:-3px; }
+.tab-add { background:var(--tab-bg); border:1px dashed var(--border2); border-radius:6px 6px 0 0; color:var(--text3); padding:5px 12px; cursor:pointer; font-size:16px; font-family:'Courier New',monospace; }
+
+/* BODY */
+#body { background:var(--bg2); border-top:1px solid var(--border); padding:12px; display:flex; flex-direction:column; gap:10px; }
+
+.section { background:var(--section-bg); border:1px solid var(--border2); border-radius:8px; overflow:hidden; }
+.section-title { background:var(--tab-bg); padding:6px 12px; font-size:10px; color:var(--accent); letter-spacing:2px; border-bottom:1px solid var(--border2); font-weight:bold; }
+.row { display:flex; align-items:center; justify-content:space-between; padding:5px 12px; }
+.row-label { color:var(--text2); font-size:12px; flex:1; }
+
+.coupure-row { display:grid; grid-template-columns:52px 1fr 72px; align-items:center; padding:3px 12px; gap:8px; border-bottom:1px solid var(--bg); }
+.coupure-label { color:var(--accent2); font-size:12px; font-weight:bold; text-align:right; }
+.coupure-total { font-size:11px; text-align:right; }
+.total-row { display:flex; justify-content:space-between; padding:6px 12px; background:var(--tab-bg); border-top:1px solid var(--border2); }
+.total-row span:first-child { font-size:10px; color:var(--accent); letter-spacing:1px; }
+.total-row span:last-child  { font-weight:bold; color:var(--accent2); }
+
+input[type=number], input[type=text], input[type=date] {
+  background:var(--inp-bg); border:1px solid var(--border2); border-radius:4px;
+  color:var(--text); padding:5px 8px; font-size:14px;
+  font-family:'Courier New',monospace; text-align:right; width:105px;
+  -moz-appearance:textfield;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; }
+input[type=date] { color-scheme:dark; width:auto; }
+input.inp-pos { border-color:#2d5a2d; color:#7ec87e; }
+input.inp-neg { border-color:#5a2d2d; color:#e05050; }
+input.inp-hi  { border-color:#5a5a2d; color:#e8c87a; }
+input.coup-inp { width:100%; text-align:center; padding:4px 5px; }
+
+.res-bloc { border-radius:8px; padding:12px; }
+.calc-row { display:flex; justify-content:space-between; margin-bottom:5px; font-size:12px; }
+.calc-row span:first-child { color:#777; }
+.sep-line { height:1px; margin:7px 0; }
+.res-total { display:flex; justify-content:space-between; align-items:center; padding-top:8px; }
+.res-total-label { font-size:11px; letter-spacing:1px; color:#aaa; }
+.res-total-val   { font-size:26px; font-weight:bold; }
+
+.info-bloc   { background:#0f0f1a; border:2px solid #4a3a7a; border-radius:8px; padding:12px; }
+.global-bloc { background:#080d1a; border:2px solid var(--accent3); border-radius:8px; padding:12px; }
+.commun-bloc { background:#0a150f; border:2px solid #2a6a4a; border-radius:8px; padding:12px; }
+.drop-bloc   { background:#150f0a; border:2px solid #6a4a2a; border-radius:8px; padding:12px; }
+
+.bloc-title { font-weight:bold; letter-spacing:2px; font-size:12px; }
+.bloc-sub   { font-size:10px; margin-top:2px; margin-bottom:8px; }
+.bloc-sep   { height:1px; margin:7px 0; }
+
+.divider { display:flex; align-items:center; gap:8px; }
+.divider-line { flex:1; height:1px; background:var(--border2); }
+.divider-text { font-size:9px; color:var(--text3); letter-spacing:2px; }
+.note { padding:2px 12px 7px; font-size:10px; color:var(--text3); line-height:1.6; }
+
+/* BOUTONS */
+.cloture-btn { background:linear-gradient(135deg,#1a3a1a,#0d2b0d); border:2px solid var(--accent); border-radius:8px; color:var(--accent); padding:12px; cursor:pointer; font-size:13px; letter-spacing:2px; font-family:'Courier New',monospace; width:100%; font-weight:bold; }
+.reset-btn { background:none; border:1px solid #3a2020; border-radius:6px; color:#6a4040; padding:8px; cursor:pointer; font-size:11px; letter-spacing:1px; font-family:'Courier New',monospace; width:100%; }
+.confirm-box { display:flex; gap:8px; align-items:center; background:#2a1010; border:1px solid #8a2d2d; border-radius:6px; padding:10px 12px; }
+.confirm-box span { flex:1; font-size:12px; color:#e05050; }
+.btn { border-radius:6px; padding:6px 12px; cursor:pointer; font-family:'Courier New',monospace; font-size:11px; }
+.btn-cancel  { background:#1a1010; border:1px solid #6a4040; color:#6a4040; }
+.btn-confirm { background:#4a1a1a; border:1px solid #e05050; color:#e05050; }
+.btn-green   { background:#1a4a1a; border:1px solid #7ec87e; color:#7ec87e; flex:1; }
+.btn-red     { background:#3a2020; border:1px solid #6a4040; color:#6a4040; flex:1; }
+
+/* WATERMARK */
+#watermark { position:fixed; bottom:0; left:0; right:0; text-align:center; padding:5px 0 8px; font-size:9px; color:#2a4a2a; letter-spacing:2px; pointer-events:none; z-index:50; background:linear-gradient(transparent,var(--bg)dd); }
+
+/* MENU LATÉRAL */
+#side-menu { display:none; position:fixed; inset:0; z-index:500; }
+#side-menu.open { display:block; }
+#side-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.7); }
+#side-panel { position:absolute; right:0; top:0; bottom:0; width:280px; background:#0d2b0d; border-left:2px solid var(--border); padding:20px 16px; overflow-y:auto; display:flex; flex-direction:column; gap:16px; }
+.menu-title { color:var(--accent); font-weight:bold; letter-spacing:2px; font-size:13px; margin-bottom:4px; }
+.menu-section { display:flex; flex-direction:column; gap:8px; }
+.menu-label { font-size:10px; color:var(--text3); letter-spacing:1px; margin-bottom:4px; }
+.theme-btn { background:var(--tab-bg); border:1px solid var(--border2); border-radius:6px; color:var(--text); padding:8px 12px; cursor:pointer; font-size:11px; font-family:'Courier New',monospace; text-align:left; display:flex; align-items:center; gap:8px; }
+.theme-btn.active { border-color:var(--accent); color:var(--accent); }
+.theme-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+.menu-btn-action { background:var(--tab-bg); border:1px solid var(--border2); border-radius:6px; color:var(--text2); padding:10px 12px; cursor:pointer; font-size:11px; font-family:'Courier New',monospace; text-align:left; letter-spacing:1px; width:100%; }
+
+/* HISTORIQUE */
+#histo-panel { display:none; position:fixed; inset:0; z-index:400; background:var(--bg); overflow-y:auto; padding:16px; }
+#histo-panel.open { display:block; }
+.histo-header { display:flex; align-items:center; gap:12px; margin-bottom:16px; position:sticky; top:0; background:var(--bg); padding:8px 0; border-bottom:1px solid var(--border2); flex-wrap:wrap; }
+.histo-back { background:none; border:1px solid var(--border2); border-radius:6px; color:var(--accent); padding:6px 12px; cursor:pointer; font-family:'Courier New',monospace; font-size:12px; }
+.histo-title { color:var(--accent); font-weight:bold; letter-spacing:2px; font-size:14px; }
+.histo-card { background:var(--section-bg); border:1px solid var(--border2); border-radius:8px; padding:12px; margin-bottom:10px; }
+.histo-card-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
+.histo-date { font-size:11px; color:var(--text3); }
+.histo-date-edit { background:var(--inp-bg); border:1px solid var(--border2); border-radius:4px; color:var(--text); padding:3px 6px; font-size:11px; font-family:'Courier New',monospace; color-scheme:dark; margin-top:4px; }
+.histo-result { font-size:18px; font-weight:bold; }
+.histo-row { display:flex; justify-content:space-between; padding:2px 0; border-bottom:1px solid var(--border2); font-size:11px; }
+.histo-del { background:none; border:none; color:#5a3030; cursor:pointer; font-size:14px; padding:0 4px; }
+
+/* MODAL */
+#modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); align-items:center; justify-content:center; z-index:300; }
+#modal.open { display:flex; }
+.modal-box { background:#0d2b0d; border:1px solid var(--border); border-radius:10px; padding:20px; width:285px; }
+.modal-title { color:var(--accent); margin-bottom:12px; font-weight:bold; letter-spacing:1px; }
+.modal-input { width:100%; background:var(--tab-bg); border:1px solid var(--border); border-radius:6px; color:var(--text); padding:8px 10px; font-size:14px; font-family:'Courier New',monospace; margin-bottom:12px; text-align:left; }
+.modal-btns { display:flex; gap:8px; }
+
+.perf-badge {
+  display:inline-flex; align-items:center; gap:5px;
+  border-radius:5px; padding:3px 8px; font-size:10px;
+  font-weight:bold; letter-spacing:1px; margin-top:6px;
+}
+.perf-detail {
+  font-size:9px; color:#666; margin-top:3px; letter-spacing:1px;
+}
+/* ─── RESPONSIVE ─── */
+
+/* Petits écrans (< 360px) */
+@media screen and (max-width: 360px) {
+  .h-title  { font-size:12px !important; letter-spacing:1px !important; }
+  .h-casino { font-size:9px !important; }
+  #clock-time { font-size:16px !important; }
+  #menu-btn { padding:4px 7px !important; font-size:14px !important; }
+  .pill { min-width:60px !important; padding:3px 5px !important; }
+  .pill-value { font-size:12px !important; }
+  .pill-label { font-size:7px !important; }
+  .tab { font-size:10px !important; padding:4px 7px !important; }
+  .coupure-row { grid-template-columns:44px 1fr 64px !important; }
+  .coupure-label { font-size:11px !important; }
+  input[type=number] { width:90px !important; font-size:13px !important; }
+  .res-total-val { font-size:22px !important; }
+  #body { padding:8px !important; }
+}
+
+/* Écrans moyens (360px - 480px) — zone confortable */
+@media screen and (min-width: 361px) and (max-width: 480px) {
+  .pill-value { font-size:13px !important; }
+  input[type=number] { width:100px !important; }
+}
+
+/* Grands écrans / tablettes (> 600px) — limiter la largeur */
+@media screen and (min-width: 600px) {
+  body { max-width:560px; margin:0 auto; }
+  #header { max-width:560px; left:50%; transform:translateX(-50%); width:560px; }
+  #tabs { max-width:560px; margin:0 auto; }
+  #watermark { max-width:560px; left:50%; transform:translateX(-50%); }
+  .h-title { font-size:17px !important; }
+  #clock-time { font-size:22px !important; }
+  .pill-value { font-size:16px !important; }
+  .res-total-val { font-size:30px !important; }
+  input[type=number] { width:120px !important; font-size:15px !important; }
+  .coupure-label { font-size:13px !important; }
+  .coup-inp { font-size:14px !important; }
+  #side-panel { width:320px !important; }
+}
+
+/* Très grands écrans / tablettes larges (> 768px) */
+@media screen and (min-width: 768px) {
+  body { max-width:680px; }
+  #header { max-width:680px; width:680px; }
+  #tabs { max-width:680px; }
+  #watermark { max-width:680px; width:680px; }
+}
+
+/* Ratio très allongé (21:9) — réduire padding vertical */
+@media screen and (max-height: 700px) {
+  #header { padding:5px 12px !important; gap:4px !important; }
+  #body { gap:7px !important; padding:8px !important; }
+  .section-title { padding:4px 10px !important; }
+  .row { padding:3px 10px !important; }
+  .coupure-row { padding:2px 10px !important; }
+  .res-bloc { padding:9px !important; }
+  .res-total-val { font-size:22px !important; }
+}
+
+/* Police système grande (accessibilité) */
+@media screen and (min-resolution: 3dppx) {
+  body { font-size:13px; }
+  .pill-value { font-size:12px !important; }
+  .pill-label { font-size:7px !important; }
+}
+
+@media print {
+  body { background:#fff !important; color:#000 !important; padding:0; font-size:11px; }
+  #splash,#watermark,#side-menu,#histo-panel,#modal,#tabs,#header,
+  .reset-btn,.cloture-btn,#reset-area,#menu-btn { display:none !important; }
+  #body { padding:0; background:#fff; }
+  .section-title { background:#eee !important; color:#000 !important; }
+  .section,.res-bloc,.info-bloc,.global-bloc,.commun-bloc,.drop-bloc { border:1px solid #ccc !important; background:#f9f9f9 !important; margin-bottom:8px; page-break-inside:avoid; }
+  * { color:#000 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="debug-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#1a0000;color:#ff6666;padding:20px;overflow-y:auto;font-family:monospace;font-size:12px;z-index:99999;">
+  <div style="color:#ffaa00;font-size:14px;margin-bottom:10px;">⚠ ERREUR JS</div>
+  <div id="debug-msg"></div>
+</div>
+
+<div id="splash">
+  <div style="position:absolute;inset:0;background:#000;"></div>
+  <div id="splash-content">
+    <div class="s-casino">🏰 CASINO DE FÉCAMP</div>
+    <div class="s-title">COMPTAGE<br>TABLES</div>
+    <div class="s-sub">CASINO MANAGEMENT SYSTEM</div>
+    <div class="s-author">✦ par Khalil Gasson ✦</div>
+  </div>
+</div>
+
+<!-- MENU -->
+<div id="side-menu">
+  <div id="side-overlay" onclick="closeMenu()"></div>
+  <div id="side-panel">
+    <div><div class="menu-title">⚙ MENU</div></div>
+    <div class="menu-section">
+      <button class="menu-btn-action" onclick="closeMenu();showHistorique()">📋 Historique des séances</button>
+      <button class="menu-btn-action" onclick="closeMenu();openParams()">⚙ Paramètres</button>
+      <button class="menu-btn-action" onclick="closeMenu();exportPDF()">📄 Exporter PDF séance en cours</button>
+    </div>
+    <div style="margin-top:auto;font-size:9px;color:#2d4a2d;text-align:center;padding-top:20px;">✦ CRÉÉ PAR KHALIL GASSON ✦<br>Casino de Fécamp</div>
+  </div>
+
+<!-- HEADER -->
+<div id="header" style="flex-direction:column;padding:8px 12px;gap:6px;">
+  <!-- Ligne 1 : titre + menu -->
+  <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span style="font-size:18px;">🎰</span>
+      <div>
+        <div class="h-casino">🏰 CASINO DE FÉCAMP</div>
+        <div class="h-title">COMPTAGE TABLES</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <div id="clock-time" style="color:#e8c87a;font-size:20px;font-weight:bold;letter-spacing:2px;font-family:'Courier New',monospace;">--:--:--</div>
+      <button id="menu-btn" onclick="openMenu()">☰</button>
+    </div>
+  </div>
+  <!-- Ligne 2 : date + pills -->
+  <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+    <div id="clock-date" style="color:#3a6a3a;font-size:9px;letter-spacing:1px;"></div>
+    <div style="display:flex;gap:6px;">
+      <div class="pill">
+        <div class="pill-label">RÉSULTAT</div>
+        <div class="pill-value" id="pill-res-val" style="color:#e8c87a">—</div>
+      </div>
+      <div class="pill">
+        <div class="pill-label">VERSEMENT</div>
+        <div class="pill-value" id="pill-vers-val" style="color:#7ec87e">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div id="tabs"></div>
+
+<!-- BODY -->
+<div id="body">
+
+  <!-- Encaisse -->
+  <div class="section">
+    <div class="section-title">ENCAISSE INITIALE</div>
+    <div class="row">
+      <span class="row-label">Float de départ</span>
+      <input type="number" id="inp-encaisse" inputmode="numeric" placeholder="12000" min="0" oninput="render()">
+    </div>
+  </div>
+
+  <!-- Jetonnerie -->
+  <div class="section">
+    <div class="section-title" id="title-jetons">JETONNERIE FINALE — 0 €</div>
+    <div id="rows-jetons"></div>
+    <div class="total-row"><span>TOTAL JETONS</span><span id="total-jetons-val">0 €</span></div>
+  </div>
+
+  <!-- Drop billet -->
+  <div class="section">
+    <div class="section-title" id="title-drop">DROP BILLET — 0 €</div>
+    <div id="rows-drop"></div>
+    <div class="total-row"><span>TOTAL CASH TABLE</span><span id="total-drop-val">0 €</span></div>
+  </div>
+
+  <!-- Jeton NN -->
+  <div class="section">
+    <div class="section-title">JETON NON NÉGOCIABLE</div>
+    <div class="row">
+      <span class="row-label">Montant Jeton NN</span>
+      <input type="number" class="inp-hi" id="inp-jetonnn" inputmode="numeric" placeholder="0" min="0" oninput="render()">
+    </div>
+    <div class="note">✓ Inclus dans le résultat table · ✓ Déduit du versement global</div>
+  </div>
+
+  <!-- Pourboires par table -->
+  <div class="section">
+    <div class="section-title">POURBOIRES</div>
+    <div class="row">
+      <span class="row-label">Pourboires cette table</span>
+      <input type="number" class="inp-pos" id="inp-pourboires" inputmode="numeric" placeholder="0" min="0" oninput="render()">
+    </div>
+  </div>
+
+  <!-- RÉSULTAT TABLE -->
+  <div class="res-bloc" style="background:#1a1a0a;border:2px solid #8a7a2d;">
+    <div class="bloc-title" style="color:#e8c87a" id="res-title">RÉSULTAT —</div>
+    <div class="bloc-sub" style="color:#6a6a3a">Drop + Jetons + JNN − Encaisse</div>
+    <div id="calc-res"></div>
+    <div class="sep-line" style="background:#8a7a2d"></div>
+    <div class="res-total">
+      <span class="res-total-label">RÉSULTAT TABLE</span>
+      <span class="res-total-val" id="res-val">0 €</span>
+    </div>
+    <div id="perf-indicator"></div>
+  </div>
+
+  <div class="divider"><div class="divider-line"></div><span class="divider-text">GLOBAL TOUTES TABLES</span><div class="divider-line"></div></div>
+
+  <!-- ═══ SECTION COMMUNE TOUTES TABLES ═══ -->
+  <div class="commun-bloc">
+    <div class="bloc-title" style="color:#7ae8b0">DONNÉES COMMUNES — TOUTES TABLES</div>
+    <div class="bloc-sub" style="color:#2a5a3a">CB, Drop caisse et Entrées s'appliquent à l'ensemble de la salle</div>
+
+    <div class="row" style="padding:5px 0;">
+      <span class="row-label">CB clients (à verser)</span>
+      <input type="number" class="inp-neg" id="inp-cb" inputmode="numeric" placeholder="0" min="0" oninput="render()">
+    </div>
+    <div class="row" style="padding:5px 0;">
+      <span class="row-label">Drop caisse (achat jetons espèces)</span>
+      <input type="number" class="inp-hi" id="inp-dropcaisse" inputmode="numeric" placeholder="0" min="0" oninput="render()">
+    </div>
+    <div class="row" style="padding:5px 0;">
+      <span class="row-label">Total entrées séance</span>
+      <input type="number" id="inp-entrees" inputmode="numeric" placeholder="0" min="0"
+             style="border-color:#2a6a4a;color:#7ae8b0;" oninput="render()">
+    </div>
+
+    <!-- DROP TOTAL SALLE JT -->
+    <div class="bloc-sep" style="background:#2a6a4a"></div>
+    <div class="bloc-title" style="color:#e8a070;margin-bottom:6px;">DROP TOTAL SALLE JT</div>
+    <div class="bloc-sub" style="color:#5a4a2a">Drops billets toutes tables + CB + Drop caisse</div>
+    <div id="calc-drop-jt"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:6px;border-top:1px solid #4a3a1a;margin-top:4px;">
+      <span style="font-size:11px;color:#8a7a5a;letter-spacing:1px;">DROP TOTAL JT</span>
+      <span style="font-size:22px;font-weight:bold;" id="drop-jt-val">0 €</span>
+    </div>
+  </div>
+
+  <!-- TOTAL RÉSULTAT -->
+  <div class="info-bloc">
+    <div class="bloc-title" style="color:#b09ae8">TOTAL RÉSULTAT TABLES</div>
+    <div class="bloc-sub" style="color:#3a3a6a">Cumul des résultats · informatif</div>
+    <div id="info-lines"></div>
+    <div class="bloc-sep" style="background:#4a3a7a"></div>
+    <div class="res-total">
+      <span class="res-total-label" style="color:#8a7ac8">TOTAL</span>
+      <span style="font-size:24px;font-weight:bold;" id="info-total-val">0 €</span>
+    </div>
+  </div>
+
+  <!-- VERSEMENT GLOBAL -->
+  <div class="global-bloc">
+    <div class="bloc-title" style="color:#7ab0e8">VERSEMENT GLOBAL</div>
+    <div class="bloc-sub" style="color:#3a4a6a">Résultats tables − CB − JNN + Pourboires</div>
+    <div id="global-lines"></div>
+    <div class="bloc-sep" style="background:#2d4a8a"></div>
+    <div id="calc-global-detail"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid #2d4a8a;margin-top:4px;">
+      <span style="font-size:12px;letter-spacing:1px;color:#aaa;">VERSEMENT TOTAL</span>
+      <span style="font-size:30px;font-weight:bold;" id="global-total-val">0 €</span>
+    </div>
+  </div>
+
+  <!-- CLÔTURE -->
+  <button class="cloture-btn" onclick="cloturerSeance()">✦ CLÔTURER LA SÉANCE ✦</button>
+
+  <!-- RESET -->
+  <div id="reset-area">
+    <button class="reset-btn" id="reset-btn" onclick="askReset()">↺ RÉINITIALISER</button>
+  </div>
+
+</div>
+
+<div id="watermark">✦ CRÉÉ PAR KHALIL GASSON · CASINO DE FÉCAMP ✦</div>
+
+<!-- MODAL -->
+<div id="modal">
+  <div class="modal-box">
+    <div class="modal-title">NOUVELLE TABLE</div>
+    <select id="modal-select" class="modal-input" style="text-align:left;width:100%;margin-bottom:8px;" onchange="onSelectChange()">
+      <option value="Blackjack 1">Blackjack 1</option>
+      <option value="Blackjack 2">Blackjack 2</option>
+      <option value="Ultimate Poker 1">Ultimate Poker 1</option>
+      <option value="Ultimate Poker 2">Ultimate Poker 2</option>
+      <option value="Boule 2000 1">Boule 2000 1</option>
+      <option value="Boule 2000 2">Boule 2000 2</option>
+      <option value="custom">✏ Nom personnalisé...</option>
+    </select>
+    <input type="text" class="modal-input" id="modal-input" placeholder="Saisir le nom..." style="display:none;margin-bottom:8px;" onkeydown="if(event.key==='Enter')confirmAdd()">
+    <div class="modal-btns">
+      <button class="btn btn-red" onclick="closeModal()">Annuler</button>
+      <button class="btn btn-green" onclick="confirmAdd()">Créer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Intercepter toutes les erreurs JS
+window.onerror = function(msg, src, line, col, err) {
+  var d = document.getElementById("debug-overlay");
+  var m = document.getElementById("debug-msg");
+  if (d && m) {
+    d.style.display = "block";
+    m.innerHTML += "<div style='margin-bottom:8px;border-bottom:1px solid #500;padding-bottom:8px;'>"
+      + "<b>Message:</b> " + msg + "<br>"
+      + "<b>Ligne:</b> " + line + " Col: " + col + "<br>"
+      + "<b>Fichier:</b> " + src + "<br>"
+      + (err ? "<b>Stack:</b><br><pre style='font-size:10px;white-space:pre-wrap;'>" + (err.stack||"") + "</pre>" : "")
+      + "</div>";
+  }
+  return false;
+};
+window.addEventListener("unhandledrejection", function(e) {
+  var d = document.getElementById("debug-overlay");
+  var m = document.getElementById("debug-msg");
+  if (d && m) {
+    d.style.display = "block";
+    m.innerHTML += "<div style='color:#ffaa00;'>Promise rejetée: " + e.reason + "</div>";
+  }
+});
+
+const COUPURES = [500,100,50,20,10,5,2,1,0.5];
+const ENCAISSE_DEFAULT = 12000;
+
+let tables = [];
+let activeIdx = 0;
+let historique = [];
+
+function makeTable(nom) {
+  return {
+    nom,
+    encaisse: String(getEncaisseDefaut ? getEncaisseDefaut(nom) : ENCAISSE_DEFAULT),
+    jetons: Object.fromEntries(COUPURES.map(c=>[c,""])),
+    drop:   Object.fromEntries(COUPURES.map(c=>[c,""])),
+    pourboires: "", jetonNN: "",
+  };
+}
+
+function sumCoupures(obj) {
+  return COUPURES.reduce((a,c)=>a+(parseFloat(obj[c])||0)*c,0);
+}
+
+function fmt(n) {
+  try {
+    return new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR",minimumFractionDigits:0,maximumFractionDigits:0}).format(n);
+  } catch(e) {
+    var abs = Math.abs(Math.round(n));
+    var s = abs.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "\u202F");
+    return (n < 0 ? "-" : "") + s + "\u202F\u20AC";
+  }
+}
+
+function calcTable(t) {
+  const totalJetons = sumCoupures(t.jetons);
+  const totalDrop   = sumCoupures(t.drop);
+  const encaisse    = parseFloat(t.encaisse)||0;
+  const pourboires  = parseFloat(t.pourboires)||0;
+  const jetonNN     = parseFloat(t.jetonNN)||0;
+  const resultat    = totalDrop + totalJetons + jetonNN - encaisse;
+  return {totalJetons,totalDrop,encaisse,pourboires,jetonNN,resultat};
+}
+
+function getGlobaux() {
+  return {
+    cb:         parseFloat(document.getElementById("inp-cb")?.value)||0,
+    dropCaisse: parseFloat(document.getElementById("inp-dropcaisse")?.value)||0,
+    entrees:    parseFloat(document.getElementById("inp-entrees")?.value)||0,
+  };
+}
+
+// ─── PERSISTENCE ───
+function persistData() {
+  try {
+    localStorage.setItem('casino_tables', JSON.stringify(tables));
+    localStorage.setItem('casino_activeIdx', activeIdx);
+    localStorage.setItem('casino_historique', JSON.stringify(historique));
+    localStorage.setItem('casino_theme', document.body.className);
+    localStorage.setItem('casino_cb',         document.getElementById("inp-cb")?.value||"");
+    localStorage.setItem('casino_dropcaisse', document.getElementById("inp-dropcaisse")?.value||"");
+    localStorage.setItem('casino_entrees',    document.getElementById("inp-entrees")?.value||"");
+  } catch(e) {}
+}
+
+function loadData() {
+  try {
+    const t  = localStorage.getItem('casino_tables');
+    const i  = localStorage.getItem('casino_activeIdx');
+    const h  = localStorage.getItem('casino_historique');
+    const th = localStorage.getItem('casino_theme');
+    if (t) { const p=JSON.parse(t); if(Array.isArray(p)&&p.length){tables=p;activeIdx=Math.min(parseInt(i)||0,p.length-1);} }
+    if (h) historique=JSON.parse(h);
+    if (th) setTheme(th.replace('theme-',''),false);
+    const cb=localStorage.getItem('casino_cb');
+    const dc=localStorage.getItem('casino_dropcaisse');
+    const en=localStorage.getItem('casino_entrees');
+    if (cb) document.getElementById("inp-cb").value=cb;
+    if (dc) document.getElementById("inp-dropcaisse").value=dc;
+    if (en) document.getElementById("inp-entrees").value=en;
+  } catch(e) {}
+}
+
+function saveActive() {
+  const t=tables[activeIdx];
+  t.encaisse   = document.getElementById("inp-encaisse")?.value||"";
+  t.pourboires = document.getElementById("inp-pourboires")?.value||"";
+  t.jetonNN    = document.getElementById("inp-jetonnn")?.value||"";
+  COUPURES.forEach(c=>{
+    const jEl=document.getElementById(`j-${c}`);
+    const dEl=document.getElementById(`d-${c}`);
+    if(jEl) t.jetons[c]=jEl.value;
+    if(dEl) t.drop[c]=dEl.value;
+  });
+}
+
+function loadActive() {
+  const t=tables[activeIdx];
+  document.getElementById("inp-encaisse").value   = t.encaisse;
+  document.getElementById("inp-pourboires").value = t.pourboires;
+  document.getElementById("inp-jetonnn").value    = t.jetonNN;
+  COUPURES.forEach(c=>{
+    const jEl=document.getElementById(`j-${c}`);
+    const dEl=document.getElementById(`d-${c}`);
+    if(jEl) jEl.value=t.jetons[c];
+    if(dEl) dEl.value=t.drop[c];
+  });
+}
+
+function render() {
+  saveActive();
+  const t=tables[activeIdx];
+  const {totalJetons,totalDrop,encaisse,pourboires,jetonNN,resultat}=calcTable(t);
+  const {cb,dropCaisse,entrees}=getGlobaux();
+
+  document.getElementById("title-jetons").textContent=`JETONNERIE FINALE — ${fmt(totalJetons)}`;
+  document.getElementById("title-drop").textContent=`DROP BILLET — ${fmt(totalDrop)}`;
+
+  COUPURES.forEach(c=>{
+    const jv=(parseFloat(t.jetons[c])||0)*c;
+    const dv=(parseFloat(t.drop[c])||0)*c;
+    const jt=document.getElementById(`jt-${c}`);
+    const dt=document.getElementById(`dt-${c}`);
+    if(jt){jt.textContent=jv>0?fmt(jv):"—";jt.style.color=jv>0?"#c8e87a":"#3a4a3a";}
+    if(dt){dt.textContent=dv>0?fmt(dv):"—";dt.style.color=dv>0?"#c8e87a":"#3a4a3a";}
+  });
+
+  document.getElementById("total-jetons-val").textContent=fmt(totalJetons);
+  document.getElementById("total-drop-val").textContent=fmt(totalDrop);
+
+  // Résultat table
+  document.getElementById("res-title").textContent=`RÉSULTAT ${t.nom.toUpperCase()}`;
+  let rH="";
+  if(totalJetons) rH+=cRow("Jetonnerie",totalJetons,"+");
+  if(totalDrop)   rH+=cRow("Drop billet",totalDrop,"+");
+  if(jetonNN)     rH+=cRow("Jeton NN",jetonNN,"+");
+  if(encaisse)    rH+=cRow("Encaisse initiale",encaisse,"-");
+  document.getElementById("calc-res").innerHTML=rH;
+  const rv=document.getElementById("res-val");
+  rv.textContent=fmt(resultat); rv.style.color=resultat>=0?"#e8c87a":"#e05050";
+  const perfEl=document.getElementById("perf-indicator");
+  if(perfEl) perfEl.innerHTML=renderPerfBadge(t);
+
+  // Totaux toutes tables
+  let resTotal=0, versTotal=0, totalDropTables=0, totalJNN=0, totalPourboires=0;
+  let iH="", gH="";
+  tables.forEach(tbl=>{
+    const c=calcTable(tbl);
+    resTotal      += c.resultat;
+    totalDropTables+= c.totalDrop;
+    totalJNN      += c.jetonNN;
+    totalPourboires+= c.pourboires;
+    const rc=c.resultat>=0?"#b09ae8":"#e05050";
+    iH+=`<div class="calc-row"><span style="color:#6a5a9a">${tbl.nom}</span><span style="color:${rc}">${fmt(c.resultat)}</span></div>`;
+    gH+=`<div class="calc-row"><span style="color:#5a7aaa">${tbl.nom}</span><span style="color:${c.resultat>=0?"#7ab0e8":"#e05050"}">${fmt(c.resultat)}</span></div>`;
+  });
+
+  // Versement global = resTotal - cb - totalJNN + totalPourboires
+  versTotal = resTotal - cb - totalJNN + totalPourboires;
+
+  // Drop total salle JT = drops billets toutes tables + CB + drop caisse
+  const dropTotalJT = totalDropTables + cb + dropCaisse;
+
+  // Pills header
+  document.getElementById("pill-res-val").textContent=fmt(resTotal);
+  document.getElementById("pill-res-val").style.color=resTotal>=0?"#e8c87a":"#e05050";
+  document.getElementById("pill-vers-val").textContent=fmt(versTotal);
+  document.getElementById("pill-vers-val").style.color=versTotal>=0?"#7ec87e":"#e05050";
+
+  // Drop JT
+  let djH="";
+  if(totalDropTables) djH+=cRow("Drops billets tables",totalDropTables,"+");
+  if(cb)              djH+=cRow("CB clients",cb,"+");
+  if(dropCaisse)      djH+=cRow("Drop caisse",dropCaisse,"+");
+  document.getElementById("calc-drop-jt").innerHTML=djH;
+  document.getElementById("drop-jt-val").textContent=fmt(dropTotalJT);
+  document.getElementById("drop-jt-val").style.color=dropTotalJT>=0?"#e8a070":"#e05050";
+
+  // Total résultat
+  document.getElementById("info-lines").innerHTML=iH;
+  const it=document.getElementById("info-total-val");
+  it.textContent=fmt(resTotal); it.style.color=resTotal>=0?"#b09ae8":"#e05050";
+
+  // Versement global
+  document.getElementById("global-lines").innerHTML=gH;
+  let vdH=cRow("Résultat total",resTotal,"+",true);
+  if(cb)             vdH+=cRow("CB",cb,"-");
+  if(totalJNN)       vdH+=cRow("Jeton NN total",totalJNN,"-");
+  if(totalPourboires)vdH+=cRow("Pourboires total",totalPourboires,"+");
+  document.getElementById("calc-global-detail").innerHTML=vdH;
+  const gt=document.getElementById("global-total-val");
+  gt.textContent=fmt(versTotal); gt.style.color=versTotal>=0?"#7ab0e8":"#e05050";
+
+  renderTabs();
+  const rb=document.getElementById("reset-btn");
+  if(rb) rb.textContent=`↺ RÉINITIALISER ${t.nom.toUpperCase()}`;
+  persistData();
+}
+
+// ─── THÉORIQUES PAR JEU ───
+function openParams()  { 
+  loadTheo(); loadEncaisses(); loadAutoClose();
+  document.getElementById("params-panel").style.display="block"; 
+}
+function closeParams() { document.getElementById("params-panel").style.display="none"; }
+
+function saveEncaisses() {
+  try {
+    localStorage.setItem('enc_bj',      document.getElementById('enc-bj')?.value      || '');
+    localStorage.setItem('enc_uth',     document.getElementById('enc-uth')?.value     || '');
+    localStorage.setItem('enc_b2k',     document.getElementById('enc-b2k')?.value     || '');
+    localStorage.setItem('enc_default', document.getElementById('enc-default')?.value || '');
+  } catch(e) {}
+}
+
+function loadEncaisses() {
+  try {
+    const bj  = localStorage.getItem('enc_bj');
+    const uth = localStorage.getItem('enc_uth');
+    const b2k = localStorage.getItem('enc_b2k');
+    const def = localStorage.getItem('enc_default');
+    if (bj)  document.getElementById('enc-bj').value      = bj;
+    if (uth) document.getElementById('enc-uth').value     = uth;
+    if (b2k) document.getElementById('enc-b2k').value     = b2k;
+    if (def) document.getElementById('enc-default').value = def;
+  } catch(e) {}
+}
+
+function getEncaisseDefaut(nomTable) {
+  const n = nomTable.toLowerCase();
+  if (n.includes("blackjack") || n.includes("bj")) {
+    return parseFloat(localStorage.getItem('enc_bj')) || 12000;
+  } else if (n.includes("ultimate") || n.includes("poker")) {
+    return parseFloat(localStorage.getItem('enc_uth')) || 12000;
+  } else if (n.includes("boule")) {
+    return parseFloat(localStorage.getItem('enc_b2k')) || 12000;
+  }
+  return parseFloat(localStorage.getItem('enc_default')) || 12000;
+}
+
+function saveTheo() {
+  try {
+    localStorage.setItem('theo_bj',      document.getElementById('theo-bj')?.value      || '');
+    localStorage.setItem('theo_uth',     document.getElementById('theo-uth')?.value     || '');
+    localStorage.setItem('theo_b2k',     document.getElementById('theo-b2k')?.value     || '');
+    localStorage.setItem('theo_default', document.getElementById('theo-default')?.value || '');
+  } catch(e) {}
+  render();
+}
+
+function loadTheo() {
+  try {
+    const bj  = localStorage.getItem('theo_bj');
+    const uth = localStorage.getItem('theo_uth');
+    const b2k = localStorage.getItem('theo_b2k');
+    const def = localStorage.getItem('theo_default');
+    if (bj)  document.getElementById('theo-bj').value      = bj;
+    if (uth) document.getElementById('theo-uth').value     = uth;
+    if (b2k) document.getElementById('theo-b2k').value     = b2k;
+    if (def) document.getElementById('theo-default').value = def;
+  } catch(e) {}
+}
+
+function getTheorique(nomTable) {
+  const n = nomTable.toLowerCase();
+  let pct, label;
+  if (n.includes("blackjack") || n.includes("bj")) {
+    pct   = parseFloat(document.getElementById('theo-bj')?.value)  || 15;
+    label = "Blackjack";
+  } else if (n.includes("ultimate") || n.includes("poker")) {
+    pct   = parseFloat(document.getElementById('theo-uth')?.value) || 25;
+    label = "Ultimate Poker";
+  } else if (n.includes("boule")) {
+    pct   = parseFloat(document.getElementById('theo-b2k')?.value) || 20;
+    label = "Boule 2000";
+  } else {
+    pct   = parseFloat(document.getElementById('theo-default')?.value) || 20;
+    label = "Défaut";
+  }
+  return { pct, label };
+}
+
+function renderPerfBadge(t) {
+  const c = calcTable(t);
+  const drop = c.totalDrop;
+  if (drop <= 0) return "";          // Pas de données, rien à afficher
+
+  const holdPct = (c.resultat / drop) * 100;
+  const theo    = getTheorique(t.nom);
+  const diff    = holdPct - theo.pct;
+
+  // Couleur selon écart au théorique
+  let bg, col, symbole, mention;
+  if (diff >= 5)       { bg="#0d2a0d"; col="#7ec87e"; symbole="▲"; mention="AU-DESSUS"; }
+  else if (diff >= -5) { bg="#1a1a08"; col="#e8c87a"; symbole="◆"; mention="DANS LA NORME"; }
+  else                 { bg="#2a0d0d"; col="#e05050"; symbole="▼"; mention="EN DESSOUS"; }
+
+  return `
+    <div style="margin-top:10px;border-top:1px solid #333;padding-top:8px;">
+      <div style="font-size:8px;color:#555;letter-spacing:2px;margin-bottom:5px;">INDICE DE PERFORMANCE</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="background:${bg};border:1px solid ${col};border-radius:6px;padding:5px 10px;text-align:center;min-width:70px;">
+          <div style="color:${col};font-size:18px;font-weight:bold;">${holdPct.toFixed(1)}%</div>
+          <div style="color:#555;font-size:8px;letter-spacing:1px;">HOLD RÉEL</div>
+        </div>
+        <div>
+          <div style="color:${col};font-size:11px;font-weight:bold;">${symbole} ${mention}</div>
+          <div style="color:#555;font-size:9px;margin-top:2px;">Théorique ${theo.label} : ${theo.pct}%</div>
+          <div style="color:#444;font-size:9px;">Écart : ${diff>=0?"+":""}${diff.toFixed(1)} pts</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function cRow(label,val,sign,neutral=false) {
+  if(val===0) return "";
+  const col=neutral?"#aaa":sign==="-"?"#e05050":"#9ab09a";
+  return `<div class="calc-row"><span>${label}</span><span style="color:${col}">${sign==="-"?`−${fmt(val)}`:`+${fmt(val)}`}</span></div>`;
+}
+
+function renderTabs() {
+  const el=document.getElementById("tabs");
+  el.innerHTML="";
+  tables.forEach((tbl,i)=>{
+    const {resultat:r}=calcTable(tbl);
+    const hasData=sumCoupures(tbl.jetons)>0||sumCoupures(tbl.drop)>0;
+    const wrap=document.createElement("div"); wrap.className="tab-wrap";
+    const btn=document.createElement("button");
+    btn.className="tab"+(i===activeIdx?" active":"");
+    btn.innerHTML=tbl.nom+(hasData?`<span style="margin-left:5px;font-size:9px;color:${r>=0?"#7ec87e":"#e05050"}">${r>=0?"▲":"▼"}</span>`:"");
+    btn.onclick=()=>{saveActive();activeIdx=i;loadActive();render();};
+    wrap.appendChild(btn);
+    if(tables.length>1){
+      const del=document.createElement("button");
+      del.className="tab-del"; del.textContent="×";
+      del.onclick=(e)=>{e.stopPropagation();removeTable(i);};
+      wrap.appendChild(del);
+    }
+    el.appendChild(wrap);
+  });
+  const add=document.createElement("button");
+  add.className="tab-add"; add.textContent="+"; add.onclick=openModal;
+  el.appendChild(add);
+}
+
+function buildCoupureRows() {
+  const jC=document.getElementById("rows-jetons");
+  const dC=document.getElementById("rows-drop");
+  jC.innerHTML=""; dC.innerHTML="";
+  COUPURES.forEach(c=>{
+    jC.appendChild(makeCoupureRow(c,c<1?`${c*100}c`:`${c}€`,"j"));
+    dC.appendChild(makeCoupureRow(c,c<1?`${c*100}c`:`${c}€`,"d"));
+  });
+}
+
+function makeCoupureRow(c,label,prefix) {
+  const r=document.createElement("div"); r.className="coupure-row";
+  r.innerHTML=`<span class="coupure-label">${label}</span><input class="coup-inp" type="number" inputmode="numeric" id="${prefix}-${c}" placeholder="0" min="0"><span class="coupure-total" id="${prefix}t-${c}" style="color:#3a4a3a">—</span>`;
+  r.querySelector("input").addEventListener("input",render);
+  return r;
+}
+
+function removeTable(idx) { tables.splice(idx,1); activeIdx=Math.min(activeIdx,tables.length-1); loadActive(); render(); }
+function onSelectChange() {
+  const sel = document.getElementById("modal-select");
+  const inp = document.getElementById("modal-input");
+  if (sel.value === "custom") {
+    inp.style.display = "block";
+    setTimeout(()=>inp.focus(),50);
+  } else {
+    inp.style.display = "none";
+  }
+}
+function openModal() {
+  document.getElementById("modal-select").value = "Blackjack 1";
+  document.getElementById("modal-input").style.display = "none";
+  document.getElementById("modal-input").value = "";
+  document.getElementById("modal").classList.add("open");
+}
+function closeModal() { document.getElementById("modal").classList.remove("open"); }
+function confirmAdd() {
+  const sel = document.getElementById("modal-select");
+  const inp = document.getElementById("modal-input");
+  let nom = sel.value === "custom"
+    ? (inp.value.trim() || `Table ${tables.length+1}`)
+    : sel.value;
+  tables.push(makeTable(nom)); activeIdx=tables.length-1;
+  closeModal(); loadActive(); render();
+}
+
+// ─── RESET ─── réinitialise table + champs globaux
+function askReset() {
+  const tNom=tables[activeIdx].nom;
+  document.getElementById("reset-area").innerHTML=`<div class="confirm-box"><span>Réinitialiser ${tNom} + champs globaux ?</span><button class="btn btn-cancel" onclick="cancelReset()">Non</button><button class="btn btn-confirm" onclick="doReset()">Oui</button></div>`;
+}
+function cancelReset() {
+  document.getElementById("reset-area").innerHTML=`<button class="reset-btn" id="reset-btn" onclick="askReset()">↺ RÉINITIALISER ${tables[activeIdx].nom.toUpperCase()}</button>`;
+}
+function doReset() {
+  tables[activeIdx]=makeTable(tables[activeIdx].nom);
+  // Réinitialiser les champs globaux
+  document.getElementById("inp-cb").value="";
+  document.getElementById("inp-dropcaisse").value="";
+  document.getElementById("inp-entrees").value="";
+  loadActive(); render(); cancelReset();
+}
+
+// ─── CLÔTURE ───
+function cloturerSeance() {
+  saveActive();
+  const now=new Date();
+  const dateStr=now.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  const heureStr=now.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
+  const {cb,dropCaisse,entrees}=getGlobaux();
+
+  let resTotal=0,versTotal=0,totalJNN=0,totalPourboires=0,totalDropTables=0;
+  const detailTables=tables.map(t=>{
+    const c=calcTable(t);
+    resTotal+=c.resultat; totalJNN+=c.jetonNN;
+    totalPourboires+=c.pourboires; totalDropTables+=c.totalDrop;
+    return {nom:t.nom,resultat:c.resultat,drop:c.totalDrop,jetons:c.totalJetons,encaisse:c.encaisse};
+  });
+  versTotal=resTotal-cb-totalJNN+totalPourboires;
+  const dropTotalJT=totalDropTables+cb+dropCaisse;
+
+  const seance={
+    date:dateStr,heure:heureStr,
+    tables:detailTables,
+    resTotal,versTotal,entrees,cb,dropCaisse,dropTotalJT,
+    isoDate:now.toISOString().split('T')[0]
+  };
+  historique.unshift(seance);
+
+  // Réinitialiser tout
+  tables=tables.map(t=>makeTable(t.nom));
+  document.getElementById("inp-cb").value="";
+  document.getElementById("inp-dropcaisse").value="";
+  document.getElementById("inp-entrees").value="";
+  activeIdx=0;
+  persistData();
+  loadActive(); render();
+
+  alert(`✦ SÉANCE CLÔTURÉE ✦\n${dateStr} à ${heureStr}\n\nRésultat total : ${fmt(resTotal)}\nVersement total : ${fmt(versTotal)}\nDrop total JT : ${fmt(dropTotalJT)}\n\nArchivée dans l'historique.`);
+}
+
+// ─── HISTORIQUE ───
+function renderHistoStats() {
+  const statsEl = document.getElementById("histo-stats");
+  if (!statsEl || historique.length === 0) {
+    if (statsEl) statsEl.innerHTML = "";
+    return;
+  }
+
+  // Regrouper les données par jeu à partir de l'historique
+  const jeux = {};
+  historique.forEach(s => {
+    s.tables.forEach(t => {
+      const n = t.nom.toLowerCase();
+      let key, label;
+      if (n.includes("blackjack") || n.includes("bj"))         { key="bj";  label="Blackjack"; }
+      else if (n.includes("ultimate") || n.includes("poker"))  { key="uth"; label="Ultimate Poker"; }
+      else if (n.includes("boule"))                            { key="b2k"; label="Boule 2000"; }
+      else                                                     { key="other"; label=t.nom; }
+
+      if (!jeux[key]) jeux[key] = { label, sessions:[], drops:[], resultats:[] };
+      if (t.drop > 0) {
+        jeux[key].drops.push(t.drop);
+        jeux[key].resultats.push(t.resultat);
+        jeux[key].sessions.push({ drop:t.drop, resultat:t.resultat });
+      }
+    });
+  });
+
+  const cards = Object.values(jeux).filter(j => j.sessions.length > 0).map(j => {
+    const totalDrop = j.drops.reduce((a,b)=>a+b,0);
+    const totalRes  = j.resultats.reduce((a,b)=>a+b,0);
+    const holdMoyen = totalDrop > 0 ? (totalRes / totalDrop) * 100 : 0;
+
+    // Hold% par séance pour min/max
+    const holds = j.sessions.map(s => s.drop > 0 ? (s.resultat/s.drop)*100 : 0);
+    const holdMin = Math.min(...holds);
+    const holdMax = Math.max(...holds);
+
+    // Théorique configuré
+    const keyMap = { bj:"theo-bj", uth:"theo-uth", b2k:"theo-b2k", other:"theo-default" };
+    const theoKey = Object.keys(jeux).find(k => jeux[k] === j);
+    const theoEl  = document.getElementById(keyMap[theoKey] || "theo-default");
+    const theo    = parseFloat(theoEl?.value) || 20;
+    const diff    = holdMoyen - theo;
+
+    let col, verdict;
+    if (diff >= 3)       { col="#7ec87e"; verdict="▲ Au-dessus"; }
+    else if (diff >= -3) { col="#e8c87a"; verdict="◆ Dans la norme"; }
+    else                 { col="#e05050"; verdict="▼ En dessous"; }
+
+    // Barre de progression
+    const barPct = Math.min(Math.max(holdMoyen, 0), 60); // cap à 60% pour l'affichage
+    const theoPct = Math.min(Math.max(theo, 0), 60);
+
+    return `
+    <div style="background:var(--section-bg);border:1px solid var(--border2);border-radius:8px;padding:12px;margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+        <div>
+          <div style="font-weight:bold;font-size:12px;color:var(--text);letter-spacing:1px;">${j.label.toUpperCase()}</div>
+          <div style="font-size:9px;color:#555;margin-top:2px;">${j.sessions.length} séance${j.sessions.length>1?"s":""} · Drop total : ${fmt(totalDrop)}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:22px;font-weight:bold;color:${col};">${holdMoyen.toFixed(1)}%</div>
+          <div style="font-size:9px;color:${col};">${verdict}</div>
+        </div>
+      </div>
+
+      <!-- Barre visuelle -->
+      <div style="position:relative;height:6px;background:#1a2a1a;border-radius:3px;margin-bottom:6px;">
+        <div style="position:absolute;left:0;top:0;height:100%;width:${(barPct/60*100).toFixed(1)}%;background:${col};border-radius:3px;transition:width 0.4s;"></div>
+        <!-- Marqueur théorique -->
+        <div style="position:absolute;top:-3px;height:12px;width:2px;background:#e8c87a;border-radius:1px;left:${(theoPct/60*100).toFixed(1)}%;"></div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:#555;">
+        <span>Min : ${holdMin.toFixed(1)}%</span>
+        <span style="color:#b09a60;">▏ Théo : ${theo}%</span>
+        <span>Max : ${holdMax.toFixed(1)}%</span>
+      </div>
+    </div>`;
+  });
+
+  statsEl.innerHTML = `
+    <div style="font-size:10px;color:var(--accent);letter-spacing:2px;font-weight:bold;margin-bottom:8px;">HOLD % MOYEN PAR JEU</div>
+    <div style="font-size:9px;color:#3a5a3a;margin-bottom:10px;">Calculé sur ${historique.length} séance${historique.length>1?"s":""} archivée${historique.length>1?"s":""}. La barre jaune ▏ indique votre théorique configuré.</div>
+    ${cards.join("")}
+  `;
+}
+
+function showHistorique() {
+  const el=document.getElementById("histo-content");
+  if(historique.length===0){
+    el.innerHTML='<div style="text-align:center;color:#5a7a5a;padding:40px;font-size:12px;">Aucune séance clôturée</div>';
+  } else {
+    el.innerHTML=historique.map((s,i)=>`
+      <div class="histo-card">
+        <div class="histo-card-header">
+          <div>
+            <div class="histo-date">📅 ${s.date} · ${s.heure}</div>
+            <input type="date" class="histo-date-edit" value="${s.isoDate||''}" onchange="updateDate(${i},this.value)">
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="histo-result" style="color:${s.versTotal>=0?"#7ec87e":"#e05050"}">${fmt(s.versTotal)}</div>
+            <button class="histo-back" onclick="exportSeancePDF(${i})" style="font-size:11px;padding:4px 8px;">📄</button>
+            <button class="histo-del" onclick="deleteSeance(${i})">🗑</button>
+          </div>
+        </div>
+        <div class="histo-card-body">
+          ${s.tables.map(t=>`<div class="histo-row"><span>${t.nom}</span><span style="color:${t.resultat>=0?"#b09ae8":"#e05050"}">${fmt(t.resultat)}</span></div>`).join("")}
+          <div class="histo-row" style="margin-top:4px;">
+            <span style="color:#e8a070">Drop total JT</span>
+            <span style="color:#e8a070">${fmt(s.dropTotalJT||0)}</span>
+          </div>
+          ${s.cb>0?`<div class="histo-row"><span style="color:#888">CB</span><span>${fmt(s.cb)}</span></div>`:""}
+          ${s.dropCaisse>0?`<div class="histo-row"><span style="color:#888">Drop caisse</span><span>${fmt(s.dropCaisse)}</span></div>`:""}
+          ${s.entrees>0?`<div class="histo-row"><span style="color:#888">Entrées</span><span>${fmt(s.entrees)}</span></div>`:""}
+          <div class="histo-row" style="margin-top:4px;font-weight:bold;">
+            <span style="color:#7ab0e8">Versement total</span>
+            <span style="color:${s.versTotal>=0?"#7ab0e8":"#e05050"};font-size:14px;">${fmt(s.versTotal)}</span>
+          </div>
+        </div>
+      </div>`).join("");
+  }
+  renderHistoStats();
+  document.getElementById("histo-panel").classList.add("open");
+}
+
+function updateDate(i, newIsoDate) {
+  if(!newIsoDate) return;
+  const d=new Date(newIsoDate);
+  historique[i].isoDate=newIsoDate;
+  historique[i].date=d.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  persistData();
+  showHistorique();
+}
+
+function exportSeancePDF(i) {
+  const s = historique[i];
+  if (!s) return;
+  const htmlContent = `<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:Arial,sans-serif;font-size:12px;color:#111;padding:20px;}
+  .header{background:#1a3a1a;color:#e8c87a;padding:12px 16px;border-radius:6px;margin-bottom:14px;}
+  .header h1{font-size:17px;margin:0;}
+  .header .sub{color:#7ec87e;font-size:9px;margin-top:3px;}
+  .section{margin-bottom:10px;border:1px solid #ccc;border-radius:5px;overflow:hidden;}
+  .section-title{background:#efefef;padding:5px 10px;font-weight:bold;font-size:10px;letter-spacing:1px;}
+  .row{display:flex;justify-content:space-between;padding:4px 10px;border-bottom:1px solid #f0f0f0;}
+  .row:last-child{border:none;}
+  .pos{color:#1a6a1a;font-weight:bold;} .neg{color:#cc0000;font-weight:bold;}
+  .drop-box{background:#2a1a08;color:#e8a070;padding:8px 14px;border-radius:5px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .total-box{background:#1a3a1a;color:#7ec87e;padding:10px 14px;border-radius:5px;display:flex;justify-content:space-between;align-items:center;margin-top:10px;}
+  .total-box .val{font-size:20px;font-weight:bold;}
+  .footer{margin-top:16px;text-align:center;font-size:8px;color:#999;border-top:1px solid #eee;padding-top:8px;}
+</style></head><body>
+<div class="header">
+  <h1>COMPTAGE TABLES — SÉANCE ARCHIVÉE</h1>
+  <div class="sub">🏰 Casino de Fécamp &nbsp;·&nbsp; ${s.date} &nbsp;·&nbsp; ${s.heure}</div>
+</div>
+${s.tables.map(t=>`
+<div class="section">
+  <div class="section-title">${t.nom.toUpperCase()}</div>
+  <div class="row"><span>Jetonnerie finale</span><span>${fmt(t.jetons||0)}</span></div>
+  <div class="row"><span>Drop billet</span><span>${fmt(t.drop||0)}</span></div>
+  <div class="row"><span><strong>Résultat</strong></span><span class="${t.resultat>=0?'pos':'neg'}">${fmt(t.resultat)}</span></div>
+</div>`).join("")}
+${(s.dropTotalJT>0)?`<div class="drop-box"><span>DROP TOTAL SALLE JT</span><span style="font-size:18px;font-weight:bold;">${fmt(s.dropTotalJT)}</span></div>`:""}
+<div class="section">
+  <div class="section-title">TOTAL RÉSULTAT</div>
+  ${s.tables.map(t=>`<div class="row"><span>${t.nom}</span><span class="${t.resultat>=0?'pos':'neg'}">${fmt(t.resultat)}</span></div>`).join("")}
+  <div class="row" style="background:#f5f5f5;"><span><strong>TOTAL</strong></span><span class="${s.resTotal>=0?'pos':'neg'}"><strong>${fmt(s.resTotal)}</strong></span></div>
+</div>
+${(s.cb>0||s.dropCaisse>0||s.entrees>0)?`<div class="section">
+  <div class="section-title">DONNÉES COMMUNES</div>
+  ${s.cb>0?`<div class="row"><span>CB clients</span><span class="neg">−${fmt(s.cb)}</span></div>`:""}
+  ${s.dropCaisse>0?`<div class="row"><span>Drop caisse</span><span>${fmt(s.dropCaisse)}</span></div>`:""}
+  ${s.entrees>0?`<div class="row"><span>Entrées</span><span>${fmt(s.entrees)}</span></div>`:""}
+</div>`:""}
+<div class="total-box" style="${s.versTotal<0?'background:#4a1010;color:#e87a7a;':''}">
+  <span>VERSEMENT TOTAL</span><span class="val">${fmt(s.versTotal)}</span>
+</div>
+<div class="footer">✦ Créé par Khalil Gasson &nbsp;·&nbsp; Casino de Fécamp ✦</div>
+</body></html>`;
+  if (window.AndroidBridge && window.AndroidBridge.imprimerPDF) {
+    window.AndroidBridge.imprimerPDF(htmlContent);
+  } else {
+    const w = window.open("","_blank");
+    if (w) { w.document.write(htmlContent); w.document.close(); }
+  }
+}
+
+function closeHistorique() { document.getElementById("histo-panel").classList.remove("open"); }
+function deleteSeance(i) { historique.splice(i,1); persistData(); showHistorique(); }
+function clearHistorique() { if(confirm("Effacer tout l'historique ?")){ historique=[]; persistData(); showHistorique(); } }
+
+function exportPDF() {
+  saveActive();
+  const {cb, dropCaisse, entrees} = getGlobaux();
+  let resTotal=0, versTotal=0, totalJNN=0, totalPourboires=0, totalDropTables=0;
+  const lignesTables = tables.map(t => {
+    const c = calcTable(t);
+    resTotal+=c.resultat; totalJNN+=c.jetonNN;
+    totalPourboires+=c.pourboires; totalDropTables+=c.totalDrop;
+    return {nom:t.nom, resultat:c.resultat, drop:c.totalDrop, jetons:c.totalJetons};
+  });
+  versTotal = resTotal - cb - totalJNN + totalPourboires;
+  const dropTotalJT = totalDropTables + cb + dropCaisse;
+  const now = new Date();
+  const dateStr = now.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  const heureStr = now.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
+
+  const htmlContent = `<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:Arial,sans-serif;font-size:12px;color:#111;padding:20px;}
+  .header{background:#1a3a1a;color:#e8c87a;padding:12px 16px;border-radius:6px;margin-bottom:14px;}
+  .header h1{font-size:17px;margin:0;}
+  .header .sub{color:#7ec87e;font-size:9px;margin-top:3px;}
+  .section{margin-bottom:10px;border:1px solid #ccc;border-radius:5px;overflow:hidden;}
+  .section-title{background:#efefef;padding:5px 10px;font-weight:bold;font-size:10px;letter-spacing:1px;color:#333;}
+  .row{display:flex;justify-content:space-between;padding:4px 10px;border-bottom:1px solid #f0f0f0;}
+  .row:last-child{border:none;}
+  .pos{color:#1a6a1a;font-weight:bold;}
+  .neg{color:#cc0000;font-weight:bold;}
+  .neutral{color:#333;}
+  .total-box{background:#1a3a1a;color:#7ec87e;padding:10px 14px;border-radius:5px;display:flex;justify-content:space-between;align-items:center;margin-top:10px;}
+  .total-box .label{font-size:10px;letter-spacing:1px;}
+  .total-box .val{font-size:20px;font-weight:bold;}
+  .drop-box{background:#2a1a08;color:#e8a070;padding:8px 14px;border-radius:5px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .footer{margin-top:16px;text-align:center;font-size:8px;color:#999;border-top:1px solid #eee;padding-top:8px;}
+</style></head><body>
+<div class="header">
+  <h1>COMPTAGE TABLES</h1>
+  <div class="sub">🏰 Casino de Fécamp &nbsp;·&nbsp; ${dateStr} &nbsp;·&nbsp; ${heureStr}</div>
+</div>
+
+${lignesTables.map(t=>`
+<div class="section">
+  <div class="section-title">${t.nom.toUpperCase()}</div>
+  <div class="row"><span>Jetonnerie finale</span><span class="neutral">${fmt(t.jetons)}</span></div>
+  <div class="row"><span>Drop billet</span><span class="neutral">${fmt(t.drop)}</span></div>
+  <div class="row"><span><strong>Résultat</strong></span><span class="${t.resultat>=0?'pos':'neg'}">${fmt(t.resultat)}</span></div>
+</div>`).join("")}
+
+<div class="drop-box">
+  <span class="label">DROP TOTAL SALLE JT</span>
+  <span style="font-size:18px;font-weight:bold;">${fmt(dropTotalJT)}</span>
+</div>
+
+<div class="section">
+  <div class="section-title">DONNÉES COMMUNES</div>
+  ${cb>0?`<div class="row"><span>CB clients</span><span class="neg">−${fmt(cb)}</span></div>`:""}
+  ${dropCaisse>0?`<div class="row"><span>Drop caisse</span><span class="neutral">${fmt(dropCaisse)}</span></div>`:""}
+  ${entrees>0?`<div class="row"><span>Entrées séance</span><span class="neutral">${fmt(entrees)}</span></div>`:""}
+</div>
+
+<div class="section">
+  <div class="section-title">TOTAL RÉSULTAT TABLES</div>
+  ${lignesTables.map(t=>`<div class="row"><span>${t.nom}</span><span class="${t.resultat>=0?'pos':'neg'}">${fmt(t.resultat)}</span></div>`).join("")}
+  <div class="row" style="background:#f5f5f5;"><span><strong>TOTAL</strong></span><span class="${resTotal>=0?'pos':'neg'}"><strong>${fmt(resTotal)}</strong></span></div>
+</div>
+
+${(cb>0||totalJNN>0||totalPourboires>0)?`<div class="section">
+  <div class="section-title">AJUSTEMENTS VERSEMENT</div>
+  ${cb>0?`<div class="row"><span>− CB</span><span class="neg">−${fmt(cb)}</span></div>`:""}
+  ${totalJNN>0?`<div class="row"><span>− Jeton NN total</span><span class="neg">−${fmt(totalJNN)}</span></div>`:""}
+  ${totalPourboires>0?`<div class="row"><span>+ Pourboires</span><span class="pos">+${fmt(totalPourboires)}</span></div>`:""}
+</div>`:""}
+
+<div class="total-box" style="${versTotal<0?'background:#4a1010;color:#e87a7a;':''}">
+  <span class="label">VERSEMENT TOTAL</span>
+  <span class="val">${fmt(versTotal)}</span>
+</div>
+
+<div class="footer">✦ Créé par Khalil Gasson &nbsp;·&nbsp; Casino de Fécamp ✦</div>
+</body></html>`;
+
+  // Appel du pont Android natif
+  if (window.AndroidBridge && window.AndroidBridge.imprimerPDF) {
+    window.AndroidBridge.imprimerPDF(htmlContent);
+  } else {
+    // Fallback navigateur (hors app)
+    const w = window.open("","_blank");
+    if (w) { w.document.write(htmlContent); w.document.close(); }
+    else alert("Impossible d'ouvrir la fenêtre d'impression.");
+  }
+}
+
+function setTheme(theme,save=true) {
+  document.body.className=theme?`theme-${theme}`:"";
+  document.querySelectorAll(".theme-btn").forEach(b=>b.classList.remove("active"));
+  const map={"":"th-green","blue":"th-blue","gold":"th-gold","red":"th-red","purple":"th-purple"};
+  const btn=document.getElementById(map[theme]); if(btn) btn.classList.add("active");
+  if(save) persistData();
+}
+
+function openMenu()  { document.getElementById("side-menu").classList.add("open"); }
+function closeMenu() { document.getElementById("side-menu").classList.remove("open"); }
+
+document.getElementById("modal").addEventListener("click",function(e){if(e.target===this)closeModal();});
+
+function saveAutoClose() {
+  const enabled = document.getElementById('auto-close-enabled')?.checked;
+  const time    = document.getElementById('auto-close-time')?.value || '06:00';
+  try {
+    localStorage.setItem('auto_close_enabled', enabled ? '1' : '0');
+    localStorage.setItem('auto_close_time', time);
+  } catch(e) {}
+  updateAutoCloseStatus();
+}
+
+function loadAutoClose() {
+  try {
+    const enabled = localStorage.getItem('auto_close_enabled') === '1';
+    const time    = localStorage.getItem('auto_close_time') || '06:00';
+    const cbEl    = document.getElementById('auto-close-enabled');
+    const tEl     = document.getElementById('auto-close-time');
+    if (cbEl) cbEl.checked = enabled;
+    if (tEl)  tEl.value    = time;
+  } catch(e) {}
+  updateAutoCloseStatus();
+}
+
+function updateAutoCloseStatus() {
+  const el      = document.getElementById('auto-close-status');
+  const enabled = document.getElementById('auto-close-enabled')?.checked;
+  const time    = document.getElementById('auto-close-time')?.value || '06:00';
+  if (!el) return;
+  el.textContent = enabled ? `⏰ Clôture programmée à ${time}` : '';
+  el.style.color = enabled ? '#7ec87e' : '#3a5a3a';
+}
+
+let autoCloseTriggered = false;
+
+function startAutoCloseWatcher() {
+  setInterval(() => {
+    const enabled = document.getElementById('auto-close-enabled')?.checked;
+    if (!enabled) { autoCloseTriggered = false; return; }
+
+    const targetTime = document.getElementById('auto-close-time')?.value || '06:00';
+    const [th, tm]   = targetTime.split(':').map(Number);
+    const now        = new Date();
+    const same = now.getHours() === th && now.getMinutes() === tm;
+
+    if (same && !autoCloseTriggered) {
+      autoCloseTriggered = true;
+      // Vérifier qu'il y a des données à clôturer
+      const hasDrop = tables.some(t => Object.values(t.drop).some(v => parseFloat(v) > 0));
+      if (hasDrop) {
+        cloturerSeance();
+        // Décocher après exécution pour ne pas relancer
+        const cbEl = document.getElementById('auto-close-enabled');
+        if (cbEl) { cbEl.checked = false; saveAutoClose(); }
+      }
+    }
+    // Réarmer pour le lendemain si on a dépassé l'heure d'1 minute
+    if (!same && autoCloseTriggered) autoCloseTriggered = false;
+  }, 30000); // vérification toutes les 30 secondes
+}
+
+function startClock() {
+  function tick() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,"0");
+    const m = String(now.getMinutes()).padStart(2,"0");
+    const s = String(now.getSeconds()).padStart(2,"0");
+    document.getElementById("clock-time").textContent = h+":"+m+":"+s;
+    const jours = ["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"];
+    const mois  = ["Jan","Fév","Mar","Avr","Mai","Jun","Jul","Aoû","Sep","Oct","Nov","Déc"];
+    document.getElementById("clock-date").textContent =
+      jours[now.getDay()]+" "+now.getDate()+" "+mois[now.getMonth()]+" "+now.getFullYear();
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  try {
+    // loadEncaisses en premier pour que getEncaisseDefaut() fonctionne
+    loadEncaisses();
+    loadData();
+
+    // Si aucune table chargée depuis localStorage, créer les défauts
+    if (!tables || tables.length === 0) {
+      tables = [
+        makeTable("Blackjack 1"),
+        makeTable("Ultimate Poker"),
+        makeTable("Boule 2000"),
+      ];
+      activeIdx = 0;
+    }
+
+    loadTheo();
+    loadAutoClose();
+    buildCoupureRows();
+    loadActive();
+    render();
+    startClock();
+    startAutoCloseWatcher();
+
+    // Masquer splash
+    setTimeout(function() {
+      var splash = document.getElementById("splash");
+      if (splash) {
+        splash.classList.add("hidden");
+        setTimeout(function() { splash.style.display = "none"; }, 800);
+      }
+    }, 2500);
+
+  } catch(err) {
+    console.error("Erreur init:", err);
+    try {
+      if (!tables || tables.length === 0) {
+        tables = [makeTable("Blackjack 1"), makeTable("Ultimate Poker"), makeTable("Boule 2000")];
+      }
+      buildCoupureRows();
+      loadActive();
+      render();
+    } catch(e2) {}
+  }
+});
+</script>
+</body>
+</html>
